@@ -1,0 +1,7 @@
+[
+  {"id": "nyc", "name": "New York City", "center": [40.7549, -73.9840], "focus": "Midtown Manhattan: rotated grid, Broadway, and river gaps"},
+  {"id": "paris", "name": "Paris", "center": [48.8566, 2.3522], "focus": "Central Paris: radial avenues and irregular local streets"},
+  {"id": "barcelona", "name": "Barcelona", "center": [41.3874, 2.1686], "focus": "Eixample and the old city: contrasting street patterns"},
+  {"id": "tokyo", "name": "Tokyo", "center": [35.6812, 139.7671], "focus": "Tokyo Station: fine-grained streets and the Imperial Palace gap"},
+  {"id": "sydney", "name": "Sydney", "center": [-33.8688, 151.2093], "focus": "Central Sydney: harbour gaps and changing grid directions"}
+]

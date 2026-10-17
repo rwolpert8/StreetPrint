@@ -1,0 +1,21 @@
+[
+  {
+    "id": "paris",
+    "name": "Paris",
+    "center": [
+      48.8566,
+      2.3522
+    ],
+    "focus": "Central Paris: radial avenues and irregular local streets",
+    "svg": "paris.svg",
+    "width_m": 6000,
+    "network_type": "all_public",
+    "crs": "+proj=aeqd +lat_0=48.8566 +lon_0=2.3522 +datum=WGS84 +units=m +type=crs",
+    "generated_at": "2026-10-17T17:10:24.933709+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date.",
+    "streets_only": true,
+    "water": true
+  }
+]

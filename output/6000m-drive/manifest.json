@@ -1,0 +1,87 @@
+[
+  {
+    "id": "nyc",
+    "name": "New York City",
+    "center": [
+      40.7549,
+      -73.984
+    ],
+    "focus": "Midtown Manhattan: rotated grid, Broadway, and river gaps",
+    "svg": "nyc.svg",
+    "width_m": 6000,
+    "network_type": "drive",
+    "crs": "+proj=aeqd +lat_0=40.7549 +lon_0=-73.984 +datum=WGS84 +units=m +type=crs",
+    "generated_at": "2026-10-17T16:50:02.039752+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  {
+    "id": "paris",
+    "name": "Paris",
+    "center": [
+      48.8566,
+      2.3522
+    ],
+    "focus": "Central Paris: radial avenues and irregular local streets",
+    "svg": "paris.svg",
+    "width_m": 6000,
+    "network_type": "drive",
+    "crs": "+proj=aeqd +lat_0=48.8566 +lon_0=2.3522 +datum=WGS84 +units=m +type=crs",
+    "generated_at": "2026-10-17T16:50:10.420230+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  {
+    "id": "barcelona",
+    "name": "Barcelona",
+    "center": [
+      41.3874,
+      2.1686
+    ],
+    "focus": "Eixample and the old city: contrasting street patterns",
+    "svg": "barcelona.svg",
+    "width_m": 6000,
+    "network_type": "drive",
+    "crs": "+proj=aeqd +lat_0=41.3874 +lon_0=2.1686 +datum=WGS84 +units=m +type=crs",
+    "generated_at": "2026-10-17T16:51:47.479268+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  {
+    "id": "tokyo",
+    "name": "Tokyo",
+    "center": [
+      35.6812,
+      139.7671
+    ],
+    "focus": "Tokyo Station: fine-grained streets and the Imperial Palace gap",
+    "svg": "tokyo.svg",
+    "width_m": 6000,
+    "network_type": "drive",
+    "crs": "+proj=aeqd +lat_0=35.6812 +lon_0=139.7671 +datum=WGS84 +units=m +type=crs",
+    "generated_at": "2026-10-17T16:53:10.391229+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  {
+    "id": "sydney",
+    "name": "Sydney",
+    "center": [
+      -33.8688,
+      151.2093
+    ],
+    "focus": "Central Sydney: harbour gaps and changing grid directions",
+    "svg": "sydney.svg",
+    "width_m": 6000,
+    "network_type": "drive",
+    "crs": "+proj=aeqd +lat_0=-33.8688 +lon_0=151.2093 +datum=WGS84 +units=m +type=crs",
+    "generated_at": "2026-10-17T16:54:16.625934+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  }
+]
