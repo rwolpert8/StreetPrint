@@ -2,3 +2,10 @@
 __pycache__/
 data/cache/
 data/graphs/
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+/public/puzzles/

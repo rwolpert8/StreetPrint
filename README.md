@@ -2,6 +2,72 @@
 
 A daily city-guessing game, starting with an offline map experiment.
 
+## Frontend preview
+
+The Next.js prototype has one playable Paris puzzle with light-blue water,
+map zoom, city autocomplete, and six guesses. Select a city, then press
+**Submit guess** (or press Enter again after selecting). Feedback is red for a
+different continent, yellow for the same continent but a different country, blue
+for the same country but a different city, and green for the correct city.
+Each result also has a text label, so color is never the only clue.
+
+Incorrect guesses show approximate great-circle distance and an eight-point
+compass direction from the guess toward the answer. The km/mi toggle updates all
+history and remembers the unit preference locally. Duplicate guesses do not
+consume attempts. A correct guess or six incorrect guesses ends the round and
+reveals the city; Play again restarts the same practice puzzle.
+
+The centered **How to play** dialog explains the rules and supports Escape,
+focus trapping, and scrolling on small screens. The blue theme uses white map
+and panel surfaces with a few geography emojis. This is a fixed practice puzzle,
+not a scheduled daily game. **Round progress currently resets on refresh**;
+only the unit preference is saved.
+
+With Node.js 22+ and npm installed, run these commands from the repository root:
+
+```powershell
+npm ci
+npm run dev
+```
+
+Open the Local URL printed by Next.js (normally `http://127.0.0.1:3000`).
+No API keys or Python installation are needed to run the frontend. Before dev
+and production builds, `scripts/prepare-assets.mjs` copies the reviewed SVG from
+`output/` to `public/puzzles/study-001.svg`, changing the map's cream background
+to white to match the UI; the source map stays in the offline
+experiment outputs. Don't hand-edit the copied SVG.
+
+```powershell
+npm test          # Search, geographic clues, feedback rules, and round transitions
+npm run typecheck # TypeScript checks
+npm run build     # Production build
+npm start         # Serve that production build
+```
+
+### Where to read the frontend code
+
+- `src/app/page.tsx` composes the page; `globals.css` sets the visual style.
+- `src/components/puzzle-map.tsx` displays and zooms the static SVG.
+- `src/components/city-search.tsx` handles typing, keyboard navigation, and selection.
+- `src/components/game-round.tsx` handles submission, history, units, and round results.
+- `src/components/how-to-play.tsx` renders the centered instructions dialog.
+- `src/lib/game.ts` contains the independently tested distance/bearing calculations,
+  feedback hierarchy, and round transitions; `src/data/puzzle.ts` defines the fixed puzzle.
+- `src/lib/city-search.ts` contains the UI-independent matching and ranking logic.
+- `src/data/cities.ts` holds 44 manually curated cities, independent of puzzle answers.
+  It includes countries, continents, aliases, and approximate reference coordinates.
+  This small catalogue is for interaction testing, not complete worldwide coverage;
+  distances use these approximate city anchors. Review them before public launch.
+
+Search ignores letter case and accents and supports aliases such as `NYC`,
+`Munchen`, and `東京`. City IDs distinguish Paris, France from Paris, Texas.
+Country flags are bundled locally through the MIT-licensed `flag-icons` package;
+there are no third-party requests while typing. System fonts also work offline.
+
+Daily puzzle selection, saved round progress, sharing, a larger city catalogue,
+and full coastal water support remain later work. Puzzle answers are currently
+included in the client bundle; this prototype does not prevent answer inspection.
+
 ## First experiment
 
 Generate unlabeled central-city road networks for NYC, Paris, Barcelona, Tokyo,
