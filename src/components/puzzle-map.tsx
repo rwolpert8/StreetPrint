@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 
-export function PuzzleMap() {
+export function PuzzleMap({ image }: { image: string }) {
   const [zoom, setZoom] = useState(1);
   const viewport = useRef<HTMLDivElement>(null);
   const centre = useRef({ x: 0.5, y: 0.5 });
@@ -31,7 +31,7 @@ export function PuzzleMap() {
       <div ref={viewport} className="map-viewport" tabIndex={0} role="region" aria-label="Street map. Use zoom buttons, then scroll to explore.">
         <div style={{ width: `${zoom * 100}%` }}>
           {/* Plain SVG image: local pre-generated asset; no image transformation needed. */}
-          <img src="/puzzles/study-001.svg" alt="Unlabeled city street network with light-blue water" width={1000} height={1000} draggable={false} className="puzzle-image" />
+          <img src={image} alt="Unlabeled city street network with light-blue water" width={1000} height={1000} draggable={false} className="puzzle-image" />
         </div>
       </div>
       <div className="map-controls" aria-label="Map zoom controls">

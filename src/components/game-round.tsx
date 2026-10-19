@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { City } from "@/data/cities";
-import { puzzle } from "@/data/puzzle";
+import type { Puzzle } from "@/data/puzzle";
 import { cityLabel } from "@/lib/city-search";
 import { emptyRound, FEEDBACK, formatDistance, geography, judge, MAX_GUESSES, submitGuess, type Round, type Units } from "@/lib/game";
 import { CitySearch } from "./city-search";
 
-export function GameRound() {
+export function GameRound({ puzzle }: { puzzle: Puzzle }) {
   const [round, setRound] = useState<Round>(emptyRound);
   const [selected, setSelected] = useState<City | null>(null);
   const [units, setUnits] = useState<Units>("km");

@@ -4,7 +4,8 @@ A daily city-guessing game, starting with an offline map experiment.
 
 ## Frontend preview
 
-The Next.js prototype has one playable Paris puzzle with light-blue water,
+The Next.js prototype has five playable puzzles: Paris (001), Tokyo (002),
+NYC (003), Barcelona (004), and Sydney (005), with light-blue water,
 map zoom, city autocomplete, and six guesses. Select a city, then press
 **Submit guess** (or press Enter again after selecting). Feedback is red for a
 different continent, yellow for the same continent but a different country, blue
@@ -19,7 +20,9 @@ reveals the city; Play again restarts the same practice puzzle.
 
 The centered **How to play** dialog explains the rules and supports Escape,
 focus trapping, and scrolling on small screens. The blue theme uses white map
-and panel surfaces with a few geography emojis. This is a fixed practice puzzle,
+and panel surfaces with a few geography emojis. The demo opens on puzzle 003.
+Use the numbered practice selector to switch maps without showing the city names.
+Switching resets guesses and map zoom. These are fixed practice puzzles,
 not a scheduled daily game. **Round progress currently resets on refresh**;
 only the unit preference is saved.
 
@@ -32,10 +35,10 @@ npm run dev
 
 Open the Local URL printed by Next.js (normally `http://127.0.0.1:3000`).
 No API keys or Python installation are needed to run the frontend. Before dev
-and production builds, `scripts/prepare-assets.mjs` copies the reviewed SVG from
-`output/` to `public/puzzles/study-001.svg`, changing the map's cream background
-to white to match the UI; the source map stays in the offline
-experiment outputs. Don't hand-edit the copied SVG.
+and production builds, `scripts/prepare-assets.mjs` copies all five SVGs
+from `output/6000m-streets-water/` to `public/puzzles/study-001.svg` through
+`study-005.svg`, changing their cream backgrounds to white to match the UI.
+The source maps stay in the offline experiment outputs. Don't hand-edit the copies.
 
 ```powershell
 npm test          # Search, geographic clues, feedback rules, and round transitions
@@ -47,12 +50,13 @@ npm start         # Serve that production build
 ### Where to read the frontend code
 
 - `src/app/page.tsx` composes the page; `globals.css` sets the visual style.
+- `src/components/practice-game.tsx` selects the puzzle and resets both panels when it changes.
 - `src/components/puzzle-map.tsx` displays and zooms the static SVG.
 - `src/components/city-search.tsx` handles typing, keyboard navigation, and selection.
 - `src/components/game-round.tsx` handles submission, history, units, and round results.
 - `src/components/how-to-play.tsx` renders the centered instructions dialog.
 - `src/lib/game.ts` contains the independently tested distance/bearing calculations,
-  feedback hierarchy, and round transitions; `src/data/puzzle.ts` defines the fixed puzzle.
+  feedback hierarchy, and round transitions; `src/data/puzzle.ts` defines the five practice puzzles.
 - `src/lib/city-search.ts` contains the UI-independent matching and ranking logic.
 - `src/data/cities.ts` holds 44 manually curated cities, independent of puzzle answers.
   It includes countries, continents, aliases, and approximate reference coordinates.
@@ -64,8 +68,8 @@ Search ignores letter case and accents and supports aliases such as `NYC`,
 Country flags are bundled locally through the MIT-licensed `flag-icons` package;
 there are no third-party requests while typing. System fonts also work offline.
 
-Daily puzzle selection, saved round progress, sharing, a larger city catalogue,
-and full coastal water support remain later work. Puzzle answers are currently
+Daily puzzle selection, saved round progress, sharing, and a larger city catalogue
+remain later work. Puzzle answers are currently
 included in the client bundle; this prototype does not prevent answer inspection.
 
 ## First experiment
@@ -91,6 +95,15 @@ is sequential to avoid sending a burst of requests to a shared service. Reruns
 reuse OSMnx's HTTP cache. If a download fails, rerun the command; already-written
 SVGs remain available.
 
+If the default server is at capacity, use an alternate public endpoint, for example
+`--overpass-url https://overpass.private.coffee/api`. Keep requests sequential.
+The selected endpoint is recorded in new manifest entries; OSMnx caches responses
+separately for each endpoint.
+Use `--reuse-graph` to reuse a saved graph for the same city, width, and network
+type while refining water or drawing settings. Only do this if the crop centre
+in `experiments/cities.json` has not changed; saved graph filenames do not encode
+the centre. If no matching graph is saved, the generator downloads it normally.
+
 Change one variable at a time:
 
 ```powershell
@@ -99,6 +112,9 @@ Change one variable at a time:
 .\.venv\Scripts\python.exe experiments/generate.py --city paris --network-type all_public --water
 .\.venv\Scripts\python.exe experiments/generate.py --city paris --network-type all_public --streets-only --water
 .\.venv\Scripts\python.exe experiments/generate.py --city barcelona --network-type all_public --streets-only
+.\.venv\Scripts\python.exe experiments/generate.py --city nyc --network-type all_public --streets-only --water --coastline
+.\.venv\Scripts\python.exe experiments/generate.py --city barcelona --network-type all_public --streets-only --water --coastline
+.\.venv\Scripts\python.exe experiments/generate.py --city sydney --network-type all_public --streets-only --water --coastline
 ```
 
 Outputs go into separate folders for each width/filter combination. Each folder
@@ -133,10 +149,22 @@ frame, and preserves islands using SVG's even-odd fill rule. It does **not**
 infer rivers from gaps between roads or connect street endpoints artificially.
 Bridges and tunnels retain their original road styling above this layer.
 
-This water experiment covers mapped inland water areas. It does not reconstruct
-ocean fill from coastline lines; Barcelona and Sydney need that additional work
-before we can promise consistent coastal water coverage. Some road gaps can
-still be real dead ends, private areas, or incomplete OSM mapping.
+Add `--coastline` alongside `--water` to fill coastal water, as used for NYC,
+Barcelona, and Sydney. The generator closes mapped coastline segments against
+the square frame and fills their water side, following OSM's convention that
+land is on the left and water on the right. Islands remain dry; inland water
+is then combined with the coastal fill. The manifest records this option.
+
+This is a local-crop approach, not a worldwide ocean dataset. If there is no
+coastline inside the frame, only mapped water polygons are drawn (these already
+cover Sydney Harbour). Broken coastline segments are rejected rather than
+closed by guessing. A completely offshore crop needs a different approach.
+Some road gaps can still be real dead ends, private areas, or incomplete OSM mapping.
+Offline checks for coastal direction, islands, joined shores, and broken segments:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s experiments -p 'test_*.py'
+```
 
 After generating the Paris and Barcelona variants above, run
 `.\.venv\Scripts\python.exe experiments/compare.py` and open
@@ -202,6 +230,7 @@ the visual crop centre if we later decide guesses should target a city landmark.
 
 - [OSMnx API documentation](https://osmnx.readthedocs.io/en/stable/user-reference.html)
 - [OpenStreetMap copyright and attribution](https://www.openstreetmap.org/copyright)
+- [OpenStreetMap coastline direction convention](https://wiki.openstreetmap.org/wiki/Tag:natural=coastline)
 
 Map data © OpenStreetMap contributors, available under the ODbL. The repository's
 MIT license covers code, not the underlying OSM data. The preview displays linked
