@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import osmnx as ox
+from osmnx._errors import InsufficientResponseError
 from pyproj import CRS, Transformer
 from shapely.geometry import box, LineString
 from shapely import make_valid, transform, union_all, set_precision
@@ -79,12 +80,18 @@ def is_street(highway):
 def load_water(city, width_m, coastline=False):
     """Combine inland water with optional coastal fill, retaining islands."""
     crs, frame, polygon = map_area(city, width_m)
-    features = ox.features_from_polygon(
-        polygon, tags={"natural": ["water", "coastline"] if coastline else "water", "waterway": "riverbank"},
-    ).to_crs(crs)
+    try:
+        features = ox.features_from_polygon(
+            polygon, tags={"natural": ["water", "coastline"] if coastline else "water", "waterway": "riverbank"},
+        ).to_crs(crs)
+    except InsufficientResponseError as error:
+        if not str(error).startswith("No matching features"):
+            raise  # An API failure must not silently produce a map with missing water.
+        print("No mapped water found in this crop; drawing streets only.", flush=True)
+        return []
     areas = [make_valid(g).intersection(frame) for g in features.geometry
              if g.geom_type in {"Polygon", "MultiPolygon"}]
-    if coastline:
+    if coastline and "natural" in features.columns:
         coasts = features.loc[features["natural"] == "coastline", "geometry"]
         if any(g.intersection(frame).length > 0 for g in coasts):
             areas.extend(coastal_water(coasts, frame))

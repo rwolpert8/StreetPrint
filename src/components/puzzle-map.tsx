@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 
-export function PuzzleMap({ image }: { image: string }) {
+export function PuzzleMap({ image, widthM }: { image: string; widthM: number }) {
   const [zoom, setZoom] = useState(1);
   const viewport = useRef<HTMLDivElement>(null);
   const centre = useRef({ x: 0.5, y: 0.5 });
@@ -40,6 +40,6 @@ export function PuzzleMap({ image }: { image: string }) {
         <button type="button" aria-label="Zoom in" disabled={zoom === 3} onClick={() => changeZoom(Math.min(3, zoom + 0.5))}>+</button>
       </div>
     </div>
-    <figcaption><span>6 × 6 km · North up · {zoom > 1 ? "Scroll to explore" : "Zoom in for a closer look"}</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a></figcaption>
+    <figcaption><span>{widthM / 1000} × {widthM / 1000} km · North up · {zoom > 1 ? "Scroll to explore" : "Zoom in for a closer look"}</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a></figcaption>
   </figure>;
 }

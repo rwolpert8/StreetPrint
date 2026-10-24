@@ -1,3 +1,5 @@
+import definitions from "../../puzzles.json";
+
 export type Continent = "Africa" | "Asia" | "Europe" | "North America" | "South America" | "Oceania";
 
 export type City = {
@@ -15,13 +17,8 @@ export type City = {
 // A deliberately small, hand-curated search catalogue, independent of puzzles.
 // Coordinates are approximate reference points, not administrative centroids.
 // Before scoring/launch, review these anchors and replace/expand this catalogue.
-export const cities: City[] = [
-  { id: "fr-paris", name: "Paris", country: "France", countryCode: "fr", continent: "Europe", latitude: 48.8566, longitude: 2.3522, aliases: [] },
+const extraCities: City[] = [
   { id: "us-paris-tx", name: "Paris", region: "Texas", country: "United States", countryCode: "us", continent: "North America", latitude: 33.6609, longitude: -95.5555, aliases: [] },
-  { id: "us-new-york", name: "New York City", country: "United States", countryCode: "us", continent: "North America", latitude: 40.7128, longitude: -74.0060, aliases: ["NYC", "New York"] },
-  { id: "es-barcelona", name: "Barcelona", country: "Spain", countryCode: "es", continent: "Europe", latitude: 41.3874, longitude: 2.1686, aliases: [] },
-  { id: "jp-tokyo", name: "Tokyo", country: "Japan", countryCode: "jp", continent: "Asia", latitude: 35.6762, longitude: 139.6503, aliases: ["Tōkyō", "東京"] },
-  { id: "au-sydney", name: "Sydney", country: "Australia", countryCode: "au", continent: "Oceania", latitude: -33.8688, longitude: 151.2093, aliases: [] },
   { id: "gb-london", name: "London", country: "United Kingdom", countryCode: "gb", continent: "Europe", latitude: 51.5074, longitude: -0.1278, aliases: [] },
   { id: "fr-lyon", name: "Lyon", country: "France", countryCode: "fr", continent: "Europe", latitude: 45.7640, longitude: 4.8357, aliases: ["Lyons"] },
   { id: "fr-marseille", name: "Marseille", country: "France", countryCode: "fr", continent: "Europe", latitude: 43.2965, longitude: 5.3698, aliases: ["Marseilles"] },
@@ -61,3 +58,10 @@ export const cities: City[] = [
   { id: "au-perth", name: "Perth", country: "Australia", countryCode: "au", continent: "Oceania", latitude: -31.9523, longitude: 115.8613, aliases: [] },
   { id: "nz-auckland", name: "Auckland", country: "New Zealand", countryCode: "nz", continent: "Oceania", latitude: -36.8485, longitude: 174.7633, aliases: [] },
 ];
+
+// Enabled puzzle cities automatically join search and override matching catalogue entries.
+const catalogue = new Map(extraCities.map((city) => [city.id, city]));
+for (const puzzle of definitions.puzzles.filter((item) => item.enabled)) {
+  catalogue.set(puzzle.city.id, puzzle.city as City);
+}
+export const cities: City[] = [...catalogue.values()];

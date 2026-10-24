@@ -1,0 +1,33 @@
+{
+  "id": "study-005",
+  "map": {
+    "center": [
+      -33.8688,
+      151.2093
+    ],
+    "widthM": 6000,
+    "coastline": true
+  },
+  "source": {
+    "id": "sydney",
+    "name": "Sydney",
+    "center": [
+      -33.8688,
+      151.2093
+    ],
+    "focus": "Central Sydney: harbour gaps and changing grid directions",
+    "svg": "sydney.svg",
+    "width_m": 6000,
+    "network_type": "all_public",
+    "crs": "+proj=aeqd +lat_0=-33.8688 +lon_0=151.2093 +datum=WGS84 +units=m +type=crs",
+    "water": true,
+    "coastline": true,
+    "streets_only": true,
+    "generated_at": "2026-10-19T19:35:03.188480+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "overpass_url": "https://overpass-api.de/api",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  "renderVersion": 1
+}

@@ -2,6 +2,26 @@
 
 A daily city-guessing game, starting with an offline map experiment.
 
+## Generate your own puzzles
+
+Edit [`puzzles.json`](puzzles.json), generate a draft, review it, then enable it.
+The file supplies the map settings, city search entry, answer, and reveal text.
+The disabled Boston entry (`study-006`) is ready for your first run.
+
+```powershell
+npm run puzzles:list
+npm run puzzles:check
+npm run puzzles:generate -- study-006
+Start-Process output/puzzles/study-006.html
+```
+
+After reviewing, set `enabled` to `true`, run `npm run assets`, and start the game
+with `npm run dev` (or refresh if it is already running). These are local tools;
+they do not call Codex or use AI tokens.
+
+See [the complete generation guide](docs/GENERATING-PUZZLES.md) for field meanings,
+setup, regeneration, enabling puzzles, and troubleshooting.
+
 ## Frontend preview
 
 The Next.js prototype has five playable puzzles: Paris (001), Tokyo (002),
@@ -35,9 +55,10 @@ npm run dev
 
 Open the Local URL printed by Next.js (normally `http://127.0.0.1:3000`).
 No API keys or Python installation are needed to run the frontend. Before dev
-and production builds, `scripts/prepare-assets.mjs` copies all five SVGs
-from `output/6000m-streets-water/` to `public/puzzles/study-001.svg` through
-`study-005.svg`, changing their cream backgrounds to white to match the UI.
+and production builds, `scripts/prepare-assets.mjs` validates `puzzles.json` and
+copies enabled SVGs from `output/puzzles/` to `public/puzzles/`, changing their
+cream backgrounds to white to match the UI. Missing or outdated maps fail with
+the command needed to regenerate them.
 The source maps stay in the offline experiment outputs. Don't hand-edit the copies.
 
 ```powershell
@@ -56,9 +77,9 @@ npm start         # Serve that production build
 - `src/components/game-round.tsx` handles submission, history, units, and round results.
 - `src/components/how-to-play.tsx` renders the centered instructions dialog.
 - `src/lib/game.ts` contains the independently tested distance/bearing calculations,
-  feedback hierarchy, and round transitions; `src/data/puzzle.ts` defines the five practice puzzles.
+  feedback hierarchy, and round transitions; `src/data/puzzle.ts` reads enabled definitions from `puzzles.json`.
 - `src/lib/city-search.ts` contains the UI-independent matching and ranking logic.
-- `src/data/cities.ts` holds 44 manually curated cities, independent of puzzle answers.
+- `src/data/cities.ts` combines extra guessable cities with enabled puzzle cities from `puzzles.json`.
   It includes countries, continents, aliases, and approximate reference coordinates.
   This small catalogue is for interaction testing, not complete worldwide coverage;
   distances use these approximate city anchors. Review them before public launch.
@@ -72,7 +93,10 @@ Daily puzzle selection, saved round progress, sharing, and a larger city catalog
 remain later work. Puzzle answers are currently
 included in the client bundle; this prototype does not prevent answer inspection.
 
-## First experiment
+## Original map experiments
+
+For new game puzzles use the definition workflow above. The commands below
+remain available for comparing the original map filters and styles.
 
 Generate unlabeled central-city road networks for NYC, Paris, Barcelona, Tokyo,
 and Sydney. All images cover **6 × 6 km**, use the same stroke width, and orient

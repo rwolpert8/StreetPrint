@@ -1,0 +1,33 @@
+{
+  "id": "study-004",
+  "map": {
+    "center": [
+      41.3874,
+      2.1686
+    ],
+    "widthM": 6000,
+    "coastline": true
+  },
+  "source": {
+    "id": "barcelona",
+    "name": "Barcelona",
+    "center": [
+      41.3874,
+      2.1686
+    ],
+    "focus": "Eixample and the old city: contrasting street patterns",
+    "svg": "barcelona.svg",
+    "width_m": 6000,
+    "network_type": "all_public",
+    "crs": "+proj=aeqd +lat_0=41.3874 +lon_0=2.1686 +datum=WGS84 +units=m +type=crs",
+    "water": true,
+    "coastline": true,
+    "streets_only": true,
+    "generated_at": "2026-10-19T19:30:37.420421+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "overpass_url": "https://overpass-api.de/api",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  "renderVersion": 1
+}

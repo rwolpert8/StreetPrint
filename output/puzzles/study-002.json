@@ -1,0 +1,31 @@
+{
+  "id": "study-002",
+  "map": {
+    "center": [
+      35.6812,
+      139.7671
+    ],
+    "widthM": 6000,
+    "coastline": false
+  },
+  "source": {
+    "id": "tokyo",
+    "name": "Tokyo",
+    "center": [
+      35.6812,
+      139.7671
+    ],
+    "focus": "Tokyo Station: fine-grained streets and the Imperial Palace gap",
+    "svg": "tokyo.svg",
+    "width_m": 6000,
+    "network_type": "all_public",
+    "crs": "+proj=aeqd +lat_0=35.6812 +lon_0=139.7671 +datum=WGS84 +units=m +type=crs",
+    "water": true,
+    "streets_only": true,
+    "generated_at": "2026-10-19T19:15:29.334274+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  "renderVersion": 1
+}

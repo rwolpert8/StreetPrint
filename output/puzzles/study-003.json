@@ -1,0 +1,32 @@
+{
+  "id": "study-003",
+  "map": {
+    "center": [
+      40.7549,
+      -73.984
+    ],
+    "widthM": 6000,
+    "coastline": true
+  },
+  "source": {
+    "id": "nyc",
+    "name": "New York City",
+    "center": [
+      40.7549,
+      -73.984
+    ],
+    "focus": "Midtown Manhattan: rotated grid, Broadway, and river gaps",
+    "svg": "nyc.svg",
+    "width_m": 6000,
+    "network_type": "all_public",
+    "crs": "+proj=aeqd +lat_0=40.7549 +lon_0=-73.984 +datum=WGS84 +units=m +type=crs",
+    "water": true,
+    "coastline": true,
+    "streets_only": true,
+    "generated_at": "2026-10-19T19:24:31.617853+00:00",
+    "osmnx_version": "2.1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "data_note": "OSM responses may be cached; generated_at is not a snapshot date."
+  },
+  "renderVersion": 1
+}

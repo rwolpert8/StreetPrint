@@ -1,17 +1,22 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import { writeFile, mkdir, readdir, unlink } from "node:fs/promises";
+import { readDefinitions, readPuzzleAsset, root } from "./puzzle-config.mjs";
 
-// Python remains offline. Next.js serves a copy of its reviewed output.
-const root = new URL("../", import.meta.url);
-await mkdir(new URL("public/puzzles/", root), { recursive: true });
-for (const [city, id] of [
-  ["paris", "study-001"], ["tokyo", "study-002"], ["nyc", "study-003"],
-  ["barcelona", "study-004"], ["sydney", "study-005"],
-]) {
-  const svg = await readFile(new URL(`output/6000m-streets-water/${city}.svg`, root), "utf8");
-  await writeFile(
-    new URL(`public/puzzles/${id}.svg`, root),
-    svg.replace('fill="#faf9f6"', 'fill="#ffffff"'),
-  );
+try {
+  const puzzles = (await readDefinitions()).filter((puzzle) => puzzle.enabled);
+  // Check every enabled map first so missing/stale maps cannot partially update the demo.
+  const assets = await Promise.all(puzzles.map(async (puzzle) => [puzzle.id, await readPuzzleAsset(puzzle)]));
+  const destination = new URL("public/puzzles/", root);
+  await mkdir(destination, { recursive: true });
+  for (const [id, svg] of assets) {
+    await writeFile(new URL(`${id}.svg`, destination), svg.replace('fill="#faf9f6"', 'fill="#ffffff"'));
+  }
+  const enabled = new Set(puzzles.map((puzzle) => `${puzzle.id}.svg`));
+  // Only remove generated puzzle copies, never source SVGs or unrelated files.
+  for (const filename of await readdir(destination)) {
+    if (/^study-\d{3,}\.svg$/.test(filename) && !enabled.has(filename)) await unlink(new URL(filename, destination));
+  }
+  console.log(`Prepared ${assets.length} enabled puzzle maps from puzzles.json.`);
+} catch (error) {
+  console.error(error.message);
+  process.exitCode = 1;
 }
-console.log(`Prepared puzzle assets in ${fileURLToPath(new URL("public/puzzles/", root))}`);

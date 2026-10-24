@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "assets": "node scripts/prepare-assets.mjs",
+    "puzzles:list": "node scripts/puzzles.mjs list",
+    "puzzles:check": "node scripts/puzzles.mjs check",
+    "puzzles:generate": "node scripts/puzzles.mjs generate",
     "predev": "npm run assets",
     "dev": "next dev --hostname 127.0.0.1",
     "prebuild": "npm run assets",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/lib/city-search.test.ts src/lib/game.test.ts"
+    "test": "tsx --test src/lib/city-search.test.ts src/lib/game.test.ts scripts/puzzle-config.test.mjs"
   },
   "dependencies": {
     "flag-icons": "7.6.0",

@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "puzzles": [
+    {
+      "id": "study-001",
+      "enabled": true,
+      "city": {
+        "id": "fr-paris",
+        "name": "Paris",
+        "country": "France",
+        "countryCode": "fr",
+        "continent": "Europe",
+        "latitude": 48.8566,
+        "longitude": 2.3522,
+        "aliases": []
+      },
+      "map": {
+        "center": [
+          48.8566,
+          2.3522
+        ],
+        "widthM": 6000,
+        "coastline": false
+      },
+      "reveal": "Paris combines an irregular older street network with long avenues. The Seine and its islands cut through the centre of this diagram."
+    },
+    {
+      "id": "study-002",
+      "enabled": true,
+      "city": {
+        "id": "jp-tokyo",
+        "name": "Tokyo",
+        "country": "Japan",
+        "countryCode": "jp",
+        "continent": "Asia",
+        "latitude": 35.6762,
+        "longitude": 139.6503,
+        "aliases": [
+          "Tōkyō",
+          "東京"
+        ]
+      },
+      "map": {
+        "center": [
+          35.6812,
+          139.7671
+        ],
+        "widthM": 6000,
+        "coastline": false
+      },
+      "reveal": "This 6 × 6 km crop is centred on Tokyo Station. Compare the dense local streets with the larger gaps and light-blue waterways."
+    },
+    {
+      "id": "study-003",
+      "enabled": true,
+      "city": {
+        "id": "us-new-york",
+        "name": "New York City",
+        "country": "United States",
+        "countryCode": "us",
+        "continent": "North America",
+        "latitude": 40.7128,
+        "longitude": -74.006,
+        "aliases": [
+          "NYC",
+          "New York"
+        ]
+      },
+      "map": {
+        "center": [
+          40.7549,
+          -73.984
+        ],
+        "widthM": 6000,
+        "coastline": true
+      },
+      "reveal": "This crop focuses on Midtown Manhattan. Look for its rotated street grid and the water separating Manhattan from the surrounding street networks."
+    },
+    {
+      "id": "study-004",
+      "enabled": true,
+      "city": {
+        "id": "es-barcelona",
+        "name": "Barcelona",
+        "country": "Spain",
+        "countryCode": "es",
+        "continent": "Europe",
+        "latitude": 41.3874,
+        "longitude": 2.1686,
+        "aliases": []
+      },
+      "map": {
+        "center": [
+          41.3874,
+          2.1686
+        ],
+        "widthM": 6000,
+        "coastline": true
+      },
+      "reveal": "This crop includes the Eixample and the old city. Compare the regular blocks with the smaller, irregular streets near the coast."
+    },
+    {
+      "id": "study-005",
+      "enabled": true,
+      "city": {
+        "id": "au-sydney",
+        "name": "Sydney",
+        "country": "Australia",
+        "countryCode": "au",
+        "continent": "Oceania",
+        "latitude": -33.8688,
+        "longitude": 151.2093,
+        "aliases": []
+      },
+      "map": {
+        "center": [
+          -33.8688,
+          151.2093
+        ],
+        "widthM": 6000,
+        "coastline": true
+      },
+      "reveal": "This crop focuses on central Sydney. Follow the harbour's branching shoreline and notice how the street grids change direction around it."
+    },
+    {
+      "id": "study-006",
+      "enabled": true,
+      "city": {
+        "id": "us-boston",
+        "name": "Boston",
+        "country": "United States",
+        "countryCode": "us",
+        "continent": "North America",
+        "latitude": 42.3601,
+        "longitude": -71.0589,
+        "aliases": []
+      },
+      "map": {
+        "center": [
+          42.3601,
+          -71.0589
+        ],
+        "widthM": 6000,
+        "coastline": true
+      },
+      "reveal": "This crop focuses on central Boston. Compare the street patterns around its waterways."
+    },
+    {
+      "id": "study-007",
+      "enabled": false,
+      "city": {
+        "id": "ca-vancouver",
+        "name": "Vancouver",
+        "region": "British Columbia",
+        "country": "Canada",
+        "countryCode": "ca",
+        "continent": "North America",
+        "latitude": 49.2827,
+        "longitude": -123.1207,
+        "aliases": []
+      },
+      "map": {
+        "center": [49.2827, -123.1207],
+        "widthM": 6000,
+        "coastline": true
+      },
+      "reveal": "This crop focuses on central Vancouver. Compare the street grids on either side of the waterways."
+    },
+    {
+      "id": "study-008",
+      "enabled": true,
+      "city": {
+        "id": "ar-buenos-aires",
+        "name": "Buenos Aires",
+        "country": "Argentina",
+        "countryCode": "ar",
+        "continent": "South America",
+        "latitude": -34.6037,
+        "longitude": -58.3816,
+        "aliases": []
+      },
+      "map": {
+        "center": [-34.6037, -58.3816],
+        "widthM": 6000,
+        "coastline": true
+      },
+      "reveal": "This crop focuses on central Buenos Aires. Look for long avenues cutting across the smaller city blocks."
+    },
+    {
+      "id": "study-009",
+      "enabled": false,
+      "city": {
+        "id": "my-kuala-lumpur",
+        "name": "Kuala Lumpur",
+        "country": "Malaysia",
+        "countryCode": "my",
+        "continent": "Asia",
+        "latitude": 3.139,
+        "longitude": 101.6869,
+        "aliases": ["KL"]
+      },
+      "map": {
+        "center": [3.1478, 101.6953],
+        "widthM": 6000,
+        "coastline": false
+      },
+      "reveal": "This crop focuses on central Kuala Lumpur. Compare the local street patterns with the larger roads and waterways."
+    }
+  ]
+}
