@@ -22,7 +22,7 @@
         "widthM": 6000,
         "coastline": false
       },
-      "reveal": "Paris combines an irregular older street network with long avenues. The Seine and its islands cut through the centre of this diagram."
+      "reveal": "Pont Neuf means ‘New Bridge’ in French, but it is actually the oldest surviving bridge in Paris."
     },
     {
       "id": "study-002",
@@ -48,7 +48,7 @@
         "widthM": 6000,
         "coastline": false
       },
-      "reveal": "This 6 × 6 km crop is centred on Tokyo Station. Compare the dense local streets with the larger gaps and light-blue waterways."
+      "reveal": "Tokyo used to be called Edo. It was renamed in 1868; its new name means ‘Eastern Capital’."
     },
     {
       "id": "study-003",
@@ -74,7 +74,7 @@
         "widthM": 6000,
         "coastline": true
       },
-      "reveal": "This crop focuses on Midtown Manhattan. Look for its rotated street grid and the water separating Manhattan from the surrounding street networks."
+      "reveal": "Manhattan’s famous street grid was planned in 1811, but it took about 60 years to build it as far north as 155th Street."
     },
     {
       "id": "study-004",
@@ -97,7 +97,7 @@
         "widthM": 6000,
         "coastline": true
       },
-      "reveal": "This crop includes the Eixample and the old city. Compare the regular blocks with the smaller, irregular streets near the coast."
+      "reveal": "Barcelona’s Eixample blocks have their corners cut off at 45-degree angles. Planner Ildefons Cerdà designed them that way to make it easier for people and traffic to move around."
     },
     {
       "id": "study-005",
@@ -120,7 +120,7 @@
         "widthM": 6000,
         "coastline": true
       },
-      "reveal": "This crop focuses on central Sydney. Follow the harbour's branching shoreline and notice how the street grids change direction around it."
+      "reveal": "The Sydney Opera House’s roof shells are all shaped from sections of a single sphere. That shared geometry helped turn its unusual design into something engineers could build."
     },
     {
       "id": "study-006",
@@ -143,7 +143,7 @@
         "widthM": 6000,
         "coastline": true
       },
-      "reveal": "This crop focuses on central Boston. Compare the street patterns around its waterways."
+      "reveal": "Boston’s Back Bay really was a bay. Much of the neighborhood stands on former tidal water that was filled in during the 1800s."
     },
     {
       "id": "study-007",
@@ -164,7 +164,7 @@
         "widthM": 6000,
         "coastline": true
       },
-      "reveal": "This crop focuses on central Vancouver. Compare the street grids on either side of the waterways."
+      "reveal": "Stanley Park opened in 1888, when Vancouver’s population was just 6,065 people."
     },
     {
       "id": "study-008",
@@ -184,7 +184,7 @@
         "widthM": 6000,
         "coastline": true
       },
-      "reveal": "This crop focuses on central Buenos Aires. Look for long avenues cutting across the smaller city blocks."
+      "reveal": "Buenos Aires has a bookstore inside a former theater. El Ateneo Grand Splendid became a bookshop in 2000, keeping the ornate dome and turning the stage into a place to have coffee."
     },
     {
       "id": "study-009",
@@ -204,7 +204,7 @@
         "widthM": 6000,
         "coastline": false
       },
-      "reveal": "This crop focuses on central Kuala Lumpur. Compare the local street patterns with the larger roads and waterways."
+      "reveal": "Two rivers meet in the heart of Kuala Lumpur. Masjid Jamek, one of the city’s oldest mosques, stands at the meeting point of the Klang and Gombak rivers."
     }
   ]
 }

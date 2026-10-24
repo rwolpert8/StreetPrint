@@ -4,15 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import type { City } from "@/data/cities";
 import type { Puzzle } from "@/data/puzzle";
 import { cityLabel } from "@/lib/city-search";
-import { emptyRound, FEEDBACK, formatDistance, geography, judge, MAX_GUESSES, submitGuess, type Round, type Units } from "@/lib/game";
+import { FEEDBACK, formatDistance, geography, judge, MAX_GUESSES, type Units } from "@/lib/game";
+import { useSavedRound } from "@/lib/use-saved-round";
 import { CitySearch } from "./city-search";
 
 export function GameRound({ puzzle }: { puzzle: Puzzle }) {
-  const [round, setRound] = useState<Round>(emptyRound);
+  const { round, ready, available, guess, restart } = useSavedRound(puzzle);
   const [selected, setSelected] = useState<City | null>(null);
   const [units, setUnits] = useState<Units>("km");
   const [session, setSession] = useState(0);
   const outcome = useRef<HTMLDivElement>(null);
+  const restartDialog = useRef<HTMLDialogElement>(null);
   const complete = round.status !== "playing";
   const duplicate = selected && round.guesses.some((guess) => guess.id === selected.id);
   const lastGuess = round.guesses.at(-1);
@@ -29,9 +31,16 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
-    if (!selected || duplicate || complete) return;
-    setRound((previous) => submitGuess(previous, selected, puzzle.target));
+    if (!ready || !selected || duplicate || complete) return;
+    guess(selected);
     setSelected(null);
+  }
+
+  function confirmRestart() {
+    restartDialog.current?.close();
+    restart();
+    setSelected(null);
+    setSession((value) => value + 1);
   }
 
   const announcement = lastGuess ? `${cityLabel(lastGuess)}: ${FEEDBACK[judge(lastGuess, puzzle.target)].label}. ${lastGuess.id === puzzle.target.id ? "You found the city!" : `${formatDistance(geography(lastGuess, puzzle.target).distanceKm, units)}. Target direction ${geography(lastGuess, puzzle.target).direction ?? "unavailable"}. ${MAX_GUESSES - round.guesses.length} guesses remaining.`}` : "";
@@ -39,6 +48,8 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
   return <section className="search-panel" aria-labelledby="guess-heading">
     <div className="round-heading"><h2 id="guess-heading">Guess the city</h2><span className="attempt-count">{round.guesses.length} / {MAX_GUESSES}</span></div>
     <p className="panel-intro">Select a city and submit your guess.</p>
+    {!available && <p className="storage-notice" role="status">Your browser couldn’t save or restore progress. You can keep playing, but this round may be lost when you leave.</p>}
+    {!ready ? <p role="status">Loading saved progress…</p> : <>
     <div className="attempt-dots" aria-label={`${MAX_GUESSES - round.guesses.length} guesses remaining`}>
       {Array.from({length: MAX_GUESSES}, (_, index) => <span key={index} className={round.guesses[index] ? `attempt used ${judge(round.guesses[index], puzzle.target)}` : "attempt"}>{index + 1}</span>)}
     </div>
@@ -50,8 +61,11 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
     </form> : <div ref={outcome} tabIndex={-1} className={`round-result ${round.status === "won" ? "correct" : "finished"}`}>
       <h3>{round.status === "won" ? "You got it! 🎉" : "Out of guesses"}</h3>
       <p className="answer-name"><span className={`fi fi-${puzzle.target.countryCode}`} aria-hidden="true" />{cityLabel(puzzle.target)}</p>
-      <p>{puzzle.reveal}</p>
-      <button className="secondary-button" type="button" onClick={() => { setRound(emptyRound); setSelected(null); setSession((value) => value + 1); }}>Play again</button>
+      <div className="city-fact">
+        <h4><span aria-hidden="true">💡</span> Did you know?</h4>
+        <p>{puzzle.reveal}</p>
+      </div>
+      <button className="secondary-button" type="button" onClick={() => restartDialog.current?.showModal()}>Play again</button>
       <span className="replay-note">Replay this practice puzzle.</span>
     </div>}
 
@@ -73,5 +87,17 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
       })}
     </ol>}
     <p className="history-note">Distance and direction point from your guess toward the answer.</p>
+    {!complete && round.guesses.length > 0 && <button className="secondary-button restart-button" type="button" onClick={() => restartDialog.current?.showModal()}>Restart puzzle</button>}
+    </>}
+    <dialog ref={restartDialog} className="instructions-dialog" aria-labelledby="restart-title" aria-describedby="restart-description">
+      <div className="dialog-content">
+        <div className="dialog-heading"><h2 id="restart-title">Restart this puzzle?</h2></div>
+        <p id="restart-description">This clears your guesses and result for Puzzle {puzzle.number}. Your other puzzles and distance units will be kept.</p>
+        <div className="restart-actions">
+          <button autoFocus className="secondary-button" type="button" onClick={() => restartDialog.current?.close()}>Keep progress</button>
+          <button className="primary-button" type="button" onClick={confirmRestart}>Restart puzzle</button>
+        </div>
+      </div>
+    </dialog>
   </section>;
 }

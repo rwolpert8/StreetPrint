@@ -6,7 +6,7 @@ A daily city-guessing game, starting with an offline map experiment.
 
 Edit [`puzzles.json`](puzzles.json), generate a draft, review it, then enable it.
 The file supplies the map settings, city search entry, answer, and reveal text.
-The disabled Boston entry (`study-006`) is ready for your first run.
+Boston (`study-006`) is included as a worked example.
 
 ```powershell
 npm run puzzles:list
@@ -24,8 +24,8 @@ setup, regeneration, enabling puzzles, and troubleshooting.
 
 ## Frontend preview
 
-The Next.js prototype has five playable puzzles: Paris (001), Tokyo (002),
-NYC (003), Barcelona (004), and Sydney (005), with light-blue water,
+The Next.js prototype has seven playable puzzles: Paris (001), Tokyo (002),
+NYC (003), Barcelona (004), Sydney (005), Boston (006), and Buenos Aires (008), with light-blue water,
 map zoom, city autocomplete, and six guesses. Select a city, then press
 **Submit guess** (or press Enter again after selecting). Feedback is red for a
 different continent, yellow for the same continent but a different country, blue
@@ -36,15 +36,36 @@ Incorrect guesses show approximate great-circle distance and an eight-point
 compass direction from the guess toward the answer. The km/mi toggle updates all
 history and remembers the unit preference locally. Duplicate guesses do not
 consume attempts. A correct guess or six incorrect guesses ends the round and
-reveals the city; Play again restarts the same practice puzzle.
+reveals the city; Play again restarts the same practice puzzle after confirmation.
 
 The centered **How to play** dialog explains the rules and supports Escape,
 focus trapping, and scrolling on small screens. The blue theme uses white map
-and panel surfaces with a few geography emojis. The demo opens on puzzle 003.
+and panel surfaces with a few geography emojis. The demo initially opens on puzzle 003,
+then remembers the last puzzle selected in this browser.
 Use the numbered practice selector to switch maps without showing the city names.
-Switching resets guesses and map zoom. These are fixed practice puzzles,
-not a scheduled daily game. **Round progress currently resets on refresh**;
-only the unit preference is saved.
+Switching resets map zoom and restores the selected puzzle's own saved round.
+These are fixed practice puzzles, not a scheduled daily game.
+
+### Saved progress
+
+Every valid guess saves immediately to `localStorage`. Refreshing or returning
+restores the guesses in order, including finished rounds. **Restart puzzle**
+(during a round) and **Play again** (afterward) ask for confirmation and clear
+only that puzzle. The km/mi preference and other puzzles stay saved.
+
+Each `streetprint-progress:<puzzle-id>` record contains a format version, puzzle
+signature, guessed city IDs, and an update timestamp. On load, the game validates
+the record and replays its IDs through the normal rules to rebuild feedback and
+completion. It does not trust a stored win/loss flag. The server fingerprints the
+answer, crop settings, and actual SVG; replacing a map or answer invalidates that
+puzzle's old progress. Reveal text and city display-name edits do not. Invalid
+records are cleared safely. Nothing is written during initial loading.
+
+This uses no cookies, accounts, or database. Saves belong to this browser and
+site address: localhost and a deployed site have separate saves, as do different
+devices or browser profiles. Clearing site data removes them; private browsing
+may discard them on exit. If storage is unavailable or full, the game continues
+and shows a notice. Concurrent tabs are not synchronized; the last save wins.
 
 With Node.js 22+ and npm installed, run these commands from the repository root:
 
@@ -62,7 +83,7 @@ the command needed to regenerate them.
 The source maps stay in the offline experiment outputs. Don't hand-edit the copies.
 
 ```powershell
-npm test          # Search, geographic clues, feedback rules, and round transitions
+npm test          # Search, game rules, saved-progress recovery, and puzzle validation
 npm run typecheck # TypeScript checks
 npm run build     # Production build
 npm start         # Serve that production build
@@ -71,10 +92,12 @@ npm start         # Serve that production build
 ### Where to read the frontend code
 
 - `src/app/page.tsx` composes the page; `globals.css` sets the visual style.
-- `src/components/practice-game.tsx` selects the puzzle and resets both panels when it changes.
+- `src/components/practice-game.tsx` remembers the selected puzzle and mounts its round.
 - `src/components/puzzle-map.tsx` displays and zooms the static SVG.
 - `src/components/city-search.tsx` handles typing, keyboard navigation, and selection.
 - `src/components/game-round.tsx` handles submission, history, units, and round results.
+- `src/lib/use-saved-round.ts` restores progress before play and saves on guess/restart events.
+- `src/lib/progress.ts` validates saved records, reconstructs rounds, and guards storage access.
 - `src/components/how-to-play.tsx` renders the centered instructions dialog.
 - `src/lib/game.ts` contains the independently tested distance/bearing calculations,
   feedback hierarchy, and round transitions; `src/data/puzzle.ts` reads enabled definitions from `puzzles.json`.
@@ -89,7 +112,7 @@ Search ignores letter case and accents and supports aliases such as `NYC`,
 Country flags are bundled locally through the MIT-licensed `flag-icons` package;
 there are no third-party requests while typing. System fonts also work offline.
 
-Daily puzzle selection, saved round progress, sharing, and a larger city catalogue
+Daily puzzle selection, sharing, and a larger city catalogue
 remain later work. Puzzle answers are currently
 included in the client bundle; this prototype does not prevent answer inspection.
 

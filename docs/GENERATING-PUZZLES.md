@@ -68,7 +68,7 @@ The file has `"schemaVersion": 1` and a `"puzzles"` array. Each puzzle looks lik
     "widthM": 6000,
     "coastline": true
   },
-  "reveal": "This crop focuses on central Boston. Compare the street patterns around its waterways."
+  "reveal": "Boston’s Back Bay really was a bay. Much of the neighborhood stands on former tidal water that was filled in during the 1800s."
 }
 ```
 
@@ -92,7 +92,7 @@ The file has `"schemaVersion": 1` and a `"puzzles"` array. Each puzzle looks lik
   the supported range is 1000–20000. The game's scale caption follows this value.
 - **map.coastline:** `true` adds coastal fill where coastline crosses the crop.
   Use it for coastal cities. Inland water is always requested either way.
-- **reveal:** your checked explanation, displayed after the round finishes.
+- **reveal:** a short, fact-checked city fun fact, displayed under **Did you know?** after a win or loss. Write only the fact; the game adds the heading. Keep the source in [CITY-FACTS.md](CITY-FACTS.md) so it is easy to check later. Editing this text does not require regenerating the map and does not reset saved progress.
 
 JSON needs double quotes and commas between entries, with no trailing comma
 after the last entry. It does not accept comments. Latitude comes first in

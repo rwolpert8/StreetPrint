@@ -13,7 +13,7 @@
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/lib/city-search.test.ts src/lib/game.test.ts scripts/puzzle-config.test.mjs"
+    "test": "tsx --test src/lib/city-search.test.ts src/lib/game.test.ts src/lib/progress.test.ts scripts/puzzle-config.test.mjs"
   },
   "dependencies": {
     "flag-icons": "7.6.0",
