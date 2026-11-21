@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { cities } from "../data/cities";
-import { emptyRound, formatDistance, geography, judge, submitGuess, type Round } from "./game";
+import { emptyRound, formatDistance, geography, judge, submitGuess, unlockedHintCount, type Round } from "./game";
 
 const city = (id: string) => cities.find((entry) => entry.id === id)!;
 const paris = city("fr-paris");
@@ -58,4 +58,26 @@ test("six wrong cities lose, but a correct sixth guess wins", () => {
   const lost = submitGuess(round, city(wrong[5]), paris);
   assert.equal(lost.status, "lost");
   assert.equal(submitGuess(lost, paris, paris), lost);
+});
+
+test("clues unlock at two and four incorrect guesses and remain after completion", () => {
+  const wrong = ["fr-lyon", "gb-london", "jp-tokyo", "us-boston", "es-madrid", "au-sydney"];
+  let round: Round = emptyRound;
+  assert.equal(unlockedHintCount(round, paris), 0);
+  for (const [index, id] of wrong.entries()) {
+    round = submitGuess(round, city(id), paris);
+    assert.equal(unlockedHintCount(round, paris), [0, 1, 1, 2, 2, 2][index]);
+    // Duplicate guesses never advance the unlock count.
+    const duplicate = submitGuess(round, city(id), paris);
+    assert.equal(unlockedHintCount(duplicate, paris), unlockedHintCount(round, paris));
+  }
+  assert.equal(round.status, "lost");
+});
+
+test("correct second or fourth guesses do not unlock another clue", () => {
+  let round = submitGuess(emptyRound, city("fr-lyon"), paris);
+  assert.equal(unlockedHintCount(submitGuess(round, paris, paris), paris), 0);
+  round = submitGuess(round, city("gb-london"), paris);
+  round = submitGuess(round, city("jp-tokyo"), paris);
+  assert.equal(unlockedHintCount(submitGuess(round, paris, paris), paris), 1);
 });

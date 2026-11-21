@@ -34,6 +34,15 @@ test("duplicate puzzle IDs and conflicting city records are rejected", () => {
   assert.throws(() => validateDefinitions(data), /conflicting/);
 });
 
+test("every puzzle, including drafts, needs exactly two nonempty clues", () => {
+  for (const hints of [undefined, null, "one clue", [], ["one"], ["one", "two", "three"], ["one", "   "], ["one", 2]]) {
+    const data = sample();
+    data.puzzles[0].enabled = false;
+    data.puzzles[0].hints = hints;
+    assert.throws(() => validateDefinitions(data), /hints must contain two/);
+  }
+});
+
 test("asset checks detect absent or stale maps but allow editorial changes", async () => {
   const folder = await mkdtemp(join(tmpdir(), "streetprint-test-"));
   const base = pathToFileURL(folder + "/");
@@ -44,6 +53,7 @@ test("asset checks detect absent or stale maps but allow editorial changes", asy
     await writeFile(join(folder, `output/puzzles/${puzzle.id}.svg`), '<svg xmlns="http://www.w3.org/2000/svg"></svg>');
     await writeFile(join(folder, `output/puzzles/${puzzle.id}.json`), JSON.stringify({ id: puzzle.id, map: puzzle.map, renderVersion: 1 }));
     puzzle.reveal = "Updated editorial information.";
+    puzzle.hints = ["A new broad clue.", "A new specific clue."];
     assert.match(await readPuzzleAsset(puzzle, base), /<svg/);
     puzzle.map.center[0] += 0.01;
     await assert.rejects(readPuzzleAsset(puzzle, base), /settings changed/);

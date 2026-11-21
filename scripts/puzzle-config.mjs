@@ -34,6 +34,8 @@ export function validateDefinitions(data) {
     check(Number.isInteger(map.widthM) && map.widthM >= 1000 && map.widthM <= 20000, `${label}: map.widthM must be an integer from 1000 to 20000.`);
     check(typeof map.coastline === "boolean", `${label}: map.coastline must be true or false.`);
     check(text(puzzle.reveal), `${label}: reveal text is required.`);
+    check(Array.isArray(puzzle.hints) && puzzle.hints.length === 2 && puzzle.hints.every(text),
+      `${label}: hints must contain two nonempty clues, broad first and specific second.`);
   }
   return data.puzzles;
 }

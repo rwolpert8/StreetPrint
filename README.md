@@ -5,7 +5,7 @@ A daily city-guessing game, starting with an offline map experiment.
 ## Generate your own puzzles
 
 Edit [`puzzles.json`](puzzles.json), generate a draft, review it, then enable it.
-The file supplies the map settings, city search entry, answer, and reveal text.
+The file supplies the map settings, city search entry, answer, two clues, and reveal text.
 Boston (`study-006`) is included as a worked example.
 
 ```powershell
@@ -24,8 +24,9 @@ setup, regeneration, enabling puzzles, and troubleshooting.
 
 ## Frontend preview
 
-The Next.js prototype has seven playable puzzles: Paris (001), Tokyo (002),
-NYC (003), Barcelona (004), Sydney (005), Boston (006), and Buenos Aires (008), with light-blue water,
+The Next.js prototype has nine playable puzzles: Paris (001), Tokyo (002),
+NYC (003), Barcelona (004), Sydney (005), Boston (006), Vancouver (007),
+Buenos Aires (008), and Kuala Lumpur (009), with light-blue water,
 map zoom, city autocomplete, and six guesses. Select a city, then press
 **Submit guess** (or press Enter again after selecting). Feedback is red for a
 different continent, yellow for the same continent but a different country, blue
@@ -37,6 +38,13 @@ compass direction from the guess toward the answer. The km/mi toggle updates all
 history and remembers the unit preference locally. Duplicate guesses do not
 consume attempts. A correct guess or six incorrect guesses ends the round and
 reveals the city; Play again restarts the same practice puzzle after confirmation.
+
+The **Clues** panel reveals a broad clue after two incorrect guesses and a more
+specific clue after four. Correct guesses and duplicate submissions do not
+advance these thresholds. Unlocked clues remain visible when the round ends;
+unused clues stay hidden. Refreshing or switching back restores the unlocks from
+saved guesses, and restarting locks them again. Edit each puzzle's two `hints`
+in `puzzles.json`; [clue references](docs/CITY-CLUES.md) document the landmarks.
 
 The centered **How to play** dialog explains the rules and supports Escape,
 focus trapping, and scrolling on small screens. The blue theme uses white map

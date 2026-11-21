@@ -1,0 +1,17 @@
+{
+  "id": "study-013",
+  "map": {
+    "center": [
+      -15.7939,
+      -47.8828
+    ],
+    "widthM": 8000,
+    "coastline": true
+  },
+  "renderVersion": 1,
+  "generated_at": "2026-11-15T18:00:32.064112+00:00",
+  "osmnx_version": "2.1.0",
+  "overpass_url": "https://overpass-api.de/api",
+  "attribution": "© OpenStreetMap contributors",
+  "data_note": "Responses may be cached; generation time is not a data snapshot date."
+}

@@ -22,6 +22,7 @@
         "widthM": 6000,
         "coastline": false
       },
+      "hints": ["This city sits on the River Seine in northern France.", "The Louvre museum and its glass pyramid are here."],
       "reveal": "Pont Neuf means ‘New Bridge’ in French, but it is actually the oldest surviving bridge in Paris."
     },
     {
@@ -48,6 +49,7 @@
         "widthM": 6000,
         "coastline": false
       },
+      "hints": ["This city lies on the eastern side of Honshu, Japan’s largest island.", "Its Shibuya district is famous for a scramble crossing where pedestrians cross in every direction."],
       "reveal": "Tokyo used to be called Edo. It was renamed in 1868; its new name means ‘Eastern Capital’."
     },
     {
@@ -74,6 +76,7 @@
         "widthM": 6000,
         "coastline": true
       },
+      "hints": ["This city is on the Atlantic coast of the United States.", "The Statue of Liberty stands on an island in its harbor."],
       "reveal": "Manhattan’s famous street grid was planned in 1811, but it took about 60 years to build it as far north as 155th Street."
     },
     {
@@ -97,6 +100,7 @@
         "widthM": 6000,
         "coastline": true
       },
+      "hints": ["This city lies on Spain’s Mediterranean coast.", "Antoni Gaudí’s Sagrada Família basilica is here."],
       "reveal": "Barcelona’s Eixample blocks have their corners cut off at 45-degree angles. Planner Ildefons Cerdà designed them that way to make it easier for people and traffic to move around."
     },
     {
@@ -120,6 +124,7 @@
         "widthM": 6000,
         "coastline": true
       },
+      "hints": ["This city is on Australia’s east coast, built around a large natural harbor.", "Bondi Beach is one of this city’s famous beaches."],
       "reveal": "The Sydney Opera House’s roof shells are all shaped from sections of a single sphere. That shared geometry helped turn its unusual design into something engineers could build."
     },
     {
@@ -143,11 +148,12 @@
         "widthM": 6000,
         "coastline": true
       },
+      "hints": ["This city is in New England, in the northeastern United States.", "Its Freedom Trail links historic sites associated with the American Revolution."],
       "reveal": "Boston’s Back Bay really was a bay. Much of the neighborhood stands on former tidal water that was filled in during the 1800s."
     },
     {
       "id": "study-007",
-      "enabled": false,
+      "enabled": true,
       "city": {
         "id": "ca-vancouver",
         "name": "Vancouver",
@@ -164,6 +170,7 @@
         "widthM": 6000,
         "coastline": true
       },
+      "hints": ["This city is on Canada’s Pacific coast, close to the United States border.", "Its Gastown neighborhood is known for a steam clock."],
       "reveal": "Stanley Park opened in 1888, when Vancouver’s population was just 6,065 people."
     },
     {
@@ -184,11 +191,12 @@
         "widthM": 6000,
         "coastline": true
       },
+      "hints": ["This city stands beside the Río de la Plata estuary in South America.", "The pink Casa Rosada, home to Argentina’s presidential office, is here."],
       "reveal": "Buenos Aires has a bookstore inside a former theater. El Ateneo Grand Splendid became a bookshop in 2000, keeping the ornate dome and turning the stage into a place to have coffee."
     },
     {
       "id": "study-009",
-      "enabled": false,
+      "enabled": true,
       "city": {
         "id": "my-kuala-lumpur",
         "name": "Kuala Lumpur",
@@ -204,7 +212,120 @@
         "widthM": 6000,
         "coastline": false
       },
+      "hints": ["This city is in the western, peninsular part of Malaysia.", "Its PETRONAS Towers are connected by a skybridge."],
       "reveal": "Two rivers meet in the heart of Kuala Lumpur. Masjid Jamek, one of the city’s oldest mosques, stands at the meeting point of the Klang and Gombak rivers."
+    },
+
+      {
+      "id": "study-010",
+      "enabled": false,
+      "city": {
+        "id": "us-new-york",
+        "name": "New York City",
+        "country": "United States",
+        "countryCode": "us",
+        "continent": "North America",
+        "latitude": 40.7128,
+        "longitude": -74.006,
+        "aliases": [
+          "NYC",
+          "New York"
+        ]
+      },
+      "map": {
+        "center": [
+          40.7549,
+          -73.984
+        ],
+        "widthM": 7000,
+        "coastline": true
+      },
+      "hints": ["This city is on the Atlantic coast of the United States.", "The Statue of Liberty stands on an island in its harbor."],
+      "reveal": "Manhattan’s famous street grid was planned in 1811, but it took about 60 years to build it as far north as 155th Street."
+    },
+
+      {
+      "id": "study-011",
+      "enabled": false,
+      "city": {
+        "id": "us-new-york",
+        "name": "New York City",
+        "country": "United States",
+        "countryCode": "us",
+        "continent": "North America",
+        "latitude": 40.7128,
+        "longitude": -74.006,
+        "aliases": [
+          "NYC",
+          "New York"
+        ]
+      },
+      "map": {
+        "center": [
+          40.7549,
+          -73.984
+        ],
+        "widthM": 8000,
+        "coastline": true
+      },
+      "hints": ["This city is on the Atlantic coast of the United States.", "The Statue of Liberty stands on an island in its harbor."],
+      "reveal": "Manhattan’s famous street grid was planned in 1811, but it took about 60 years to build it as far north as 155th Street."
+    },
+
+      {
+      "id": "study-012",
+      "enabled": true,
+      "city": {
+        "id": "nl-amsterdam",
+        "name": "Amsterdam",
+        "country": "Netherlands",
+        "countryCode": "nl",
+        "continent": "Europe",
+        "latitude": 52.3676,
+        "longitude": 4.9041,
+        "aliases": [
+          "AMS",
+          "Amsterdam"
+        ]
+      },
+      "map": {
+        "center": [
+          52.3676,
+          4.9041
+        ],
+        "widthM": 8000,
+        "coastline": true
+      },
+      "hints": ["This city in Western Europe uses canals to shape much of its historic center", "Anne Frank’s hiding place is now a museum in this city."],
+      "reveal": "Amsterdam's canal arcs were planned. In the 1600s, the city expanded by draining marshland and building concentric canals, creating space for new streets and houses."
+    },
+
+    {
+      "id": "study-013",
+      "enabled": true,
+      "city": {
+        "id": "br-brasilia",
+        "name": "Brasília",
+        "country": "Brazil",
+        "countryCode": "br",
+        "continent": "South America",
+        "latitude": -15.7939,
+        "longitude": -47.8828,
+        "aliases": [
+          "BSB",
+          "Brasília"
+        ]
+      },
+      "map": {
+        "center": [
+          -15.7939,
+          -47.8828
+        ],
+        "widthM": 8000,
+        "coastline": true
+      },
+      "hints": ["This city lies inland, in the central-western part of Brazil.", "Built to become the national capital, it replaced Rio de Janeiro in 1960."],
+      "reveal": "From above, Brasília’s planned layout resembles a bird in flight. Urban planner Lúcio Costa designed the city’s overall shape, while architect Oscar Niemeyer designed its landmark government buildings."
     }
   ]
 }

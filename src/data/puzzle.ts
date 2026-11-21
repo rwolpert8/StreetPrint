@@ -1,7 +1,7 @@
 import definitions from "../../puzzles.json";
 import { cities, type City } from "./cities";
 
-export type Puzzle = { id: string; number: string; image: string; target: City; reveal: string; widthM: number; signature: string };
+export type Puzzle = { id: string; number: string; image: string; target: City; reveal: string; hints: string[]; widthM: number; signature: string };
 
 // Validated by npm run assets before development and builds. Answers are inspectable.
 export const puzzles: Puzzle[] = definitions.puzzles.filter((puzzle) => puzzle.enabled).map((puzzle) => ({
@@ -10,6 +10,7 @@ export const puzzles: Puzzle[] = definitions.puzzles.filter((puzzle) => puzzle.e
   image: `/puzzles/${puzzle.id}.svg`,
   target: cities.find((city) => city.id === puzzle.city.id)!,
   reveal: puzzle.reveal,
+  hints: puzzle.hints,
   widthM: puzzle.map.widthM,
   // Editorial text and city display names do not invalidate a saved round.
   // The server page also fingerprints the actual SVG before sending puzzles to the UI.

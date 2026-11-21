@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { cities } from "../data/cities";
-import { emptyRound, submitGuess, type Round } from "./game";
+import { emptyRound, submitGuess, unlockedHintCount, type Round } from "./game";
 import { clearProgress, loadProgress, progressKey, restoreRound, saveProgress } from "./progress";
 
 const city = (id: string) => cities.find((entry) => entry.id === id)!;
@@ -48,6 +48,18 @@ test("rejects malformed, stale, duplicate, unknown, and impossible histories", (
   ];
   for (const raw of invalid) assert.equal(restoreRound(raw, puzzle, cities), null, raw);
   assert.deepEqual(restoreRound(record([]), puzzle, cities), emptyRound);
+});
+
+test("existing saves restore unlocked clues and restarting locks them again", () => {
+  const store = memoryStorage();
+  for (const ids of [["fr-lyon", "gb-london"], ["fr-lyon", "gb-london", "jp-tokyo", "us-boston"]]) {
+    store.setItem(progressKey(puzzle.id), record(ids)); // Existing format: no hint state.
+    const restored = loadProgress(() => store, puzzle, cities).round;
+    assert.equal(unlockedHintCount(restored, puzzle.target), ids.length / 2);
+    assert.equal(unlockedHintCount(submitGuess(restored, puzzle.target, puzzle.target), puzzle.target), ids.length / 2);
+    clearProgress(() => store, puzzle.id);
+    assert.equal(unlockedHintCount(loadProgress(() => store, puzzle, cities).round, puzzle.target), 0);
+  }
 });
 
 test("switching and restarting isolate puzzle saves and preserve units", () => {

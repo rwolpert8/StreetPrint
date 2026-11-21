@@ -1,6 +1,7 @@
 import type { City } from "../data/cities";
 
 export const MAX_GUESSES = 6;
+export const HINT_THRESHOLDS = [2, 4] as const;
 export type Feedback = "correct" | "country" | "continent" | "different";
 export type Units = "km" | "mi";
 export const FEEDBACK: Record<Feedback, { label: string; description: string }> = {
@@ -45,6 +46,11 @@ export function formatDistance(km: number, units: Units): string {
 
 export type Round = { guesses: City[]; status: "playing" | "won" | "lost" };
 export const emptyRound: Round = { guesses: [], status: "playing" };
+
+export function unlockedHintCount(round: Round, target: City): number {
+  const incorrect = round.guesses.filter((guess) => guess.id !== target.id).length;
+  return HINT_THRESHOLDS.filter((threshold) => incorrect >= threshold).length;
+}
 
 // Keep round transitions independent of React, including double-submit guards.
 export function submitGuess(round: Round, guess: City, target: City): Round {

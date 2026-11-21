@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { City } from "@/data/cities";
 import type { Puzzle } from "@/data/puzzle";
 import { cityLabel } from "@/lib/city-search";
-import { FEEDBACK, formatDistance, geography, judge, MAX_GUESSES, type Units } from "@/lib/game";
+import { FEEDBACK, formatDistance, geography, HINT_THRESHOLDS, judge, MAX_GUESSES, unlockedHintCount, type Units } from "@/lib/game";
 import { useSavedRound } from "@/lib/use-saved-round";
 import { CitySearch } from "./city-search";
 
@@ -18,6 +18,10 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
   const complete = round.status !== "playing";
   const duplicate = selected && round.guesses.some((guess) => guess.id === selected.id);
   const lastGuess = round.guesses.at(-1);
+  const hintCount = unlockedHintCount(round, puzzle.target);
+  const newHintIndex = HINT_THRESHOLDS.findIndex((threshold) => round.guesses.length === threshold);
+  const hintAnnouncement = lastGuess && lastGuess.id !== puzzle.target.id && newHintIndex !== -1
+    ? ` Clue ${newHintIndex + 1} unlocked: ${puzzle.hints[newHintIndex]}` : "";
 
   useEffect(() => {
     try { if (localStorage.getItem("streetprint-units") === "mi") setUnits("mi"); } catch { /* Storage can be unavailable in private browsing. */ }
@@ -54,6 +58,15 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
       {Array.from({length: MAX_GUESSES}, (_, index) => <span key={index} className={round.guesses[index] ? `attempt used ${judge(round.guesses[index], puzzle.target)}` : "attempt"}>{index + 1}</span>)}
     </div>
 
+    {(!complete || hintCount > 0) && <section className="puzzle-hints" aria-labelledby="hints-heading">
+      <h3 id="hints-heading"><span aria-hidden="true">🔎</span> Clues</h3>
+      <ol>
+        {HINT_THRESHOLDS.map((threshold, index) => index < hintCount
+          ? <li key={threshold} className="unlocked-hint"><strong>Clue {index + 1}</strong><p>{puzzle.hints[index]}</p></li>
+          : !complete && <li key={threshold} className="locked-hint">Clue {index + 1} unlocks after {threshold} incorrect guesses.</li>)}
+      </ol>
+    </section>}
+
     {!complete ? <form onSubmit={submit}>
       <CitySearch key={`${session}-${round.guesses.length}`} selected={selected} onSelect={setSelected} autoFocus={round.guesses.length > 0 || session > 0} />
       {duplicate && <p className="duplicate-note" role="status">You already guessed {selected.name}. Choose a different city.</p>}
@@ -73,8 +86,8 @@ export function GameRound({ puzzle }: { puzzle: Puzzle }) {
       <button type="button" aria-pressed={units === "km"} onClick={() => changeUnits("km")}>km</button>
       <button type="button" aria-pressed={units === "mi"} onClick={() => changeUnits("mi")}>mi</button>
     </div></div>
-    <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
-    {round.guesses.length === 0 ? <p className="empty-history"><span aria-hidden="true">🧭</span>Your clues will appear here after each guess.</p> : <ol className="guess-list">
+    <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{announcement}{hintAnnouncement}</p>
+    {round.guesses.length === 0 ? <p className="empty-history"><span aria-hidden="true">🧭</span>Your guess history will appear here.</p> : <ol className="guess-list">
       {round.guesses.map((guess) => {
         const feedback = judge(guess, puzzle.target);
         const geo = geography(guess, puzzle.target);
