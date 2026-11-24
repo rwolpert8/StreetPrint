@@ -1,32 +1,57 @@
 import { cities, type City } from "../data/cities";
 
 export function normalize(text: string): string {
-  return text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim().replace(/\s+/g, " ");
+  return text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase()
+    .replace(/[\p{P}\p{S}]+/gu, " ").trim().replace(/\s+/g, " ");
 }
 
 export function cityLabel(city: City): string {
   return [city.name, city.region, city.country].filter(Boolean).join(", ");
 }
 
-// Search only the city catalogue, never puzzle metadata or the current answer.
-export function searchCities(query: string, limit = 8): City[] {
-  const normalized = normalize(query);
-  if (!normalized) return [];
-  return cities
+// Normalize once, not thousands of names/aliases on every keypress. Sort by
+// population once as well; that order breaks ties within each matching tier.
+export function createCitySearch(catalogue: City[]) {
+  const index = [...catalogue]
+    .sort((a, b) => (b.population ?? 0) - (a.population ?? 0)
+      || a.name.localeCompare(b.name, "en") || a.country.localeCompare(b.country, "en")
+      || (a.region ?? "").localeCompare(b.region ?? "", "en") || a.id.localeCompare(b.id, "en"))
     .map((city) => {
-      const names = [city.name, ...city.aliases].map(normalize);
-      const label = normalize(cityLabel(city));
-      const rank = names.some((name) => name === normalized) ? 0
-        : normalize(city.name).startsWith(normalized) ? 1
-        : names.some((name) => name.startsWith(normalized)) ? 2
-        : label.startsWith(normalized) ? 3
-        : normalized.length > 1 && names.some((name) => name.includes(normalized)) ? 4
-        : normalized.length > 1 && normalized.split(/[\s,]+/).filter(Boolean).every((word) => label.includes(word)) ? 5
+      const name = normalize(city.name);
+      const aliases = [...new Set(city.aliases.map(normalize))].filter((alias) => alias && alias !== name);
+      const qualifiers = [...new Set([city.region, city.regionCode, city.country, city.countryCode, ...(city.countryAliases ?? [])]
+        .filter((value): value is string => Boolean(value)).flatMap((value) => normalize(value).split(" ")))];
+      return { city, name, aliases, qualifiers };
+    });
+
+  return (query: string, limit = 8): City[] => {
+    const normalized = normalize(query);
+    const count = Number.isFinite(limit) ? Math.max(0, Math.floor(limit)) : 8;
+    if (!normalized || count === 0) return [];
+    const words = normalized.split(" ");
+    const qualifiedQueries = words.slice(1).map((_, index) => ({
+      name: words.slice(0, index + 1).join(" "), qualifiers: words.slice(index + 1),
+    }));
+    const matches: City[][] = Array.from({ length: 5 }, () => []);
+    for (const { city, name, aliases, qualifiers } of index) {
+      const nameRank = (query: string) => name === query ? 0
+        : aliases.includes(query) ? 1
+        : name.startsWith(query) ? 2
+        : aliases.some((alias) => alias.startsWith(query)) ? 3
+        : query.length > 1 && (name.includes(query) || aliases.some((alias) => alias.includes(query))) ? 4
         : Infinity;
-      return { city, rank };
-    })
-    .filter(({ rank }) => Number.isFinite(rank))
-    .sort((a, b) => a.rank - b.rank || a.city.name.localeCompare(b.city.name, "en") || a.city.country.localeCompare(b.city.country, "en"))
-    .slice(0, Math.max(0, limit))
-    .map(({ city }) => city);
+      let rank = nameRank(normalized);
+      for (const query of qualifiedQueries) {
+        if (query.qualifiers.every((word) => qualifiers.some((token) => token.startsWith(word)))) {
+          rank = Math.min(rank, nameRank(query.name));
+        }
+      }
+      // Each tier is already in population order. Never sort thousands of matches.
+      if (Number.isFinite(rank) && matches[rank].length < count) matches[rank].push(city);
+    }
+    return matches.flat().slice(0, count);
+  };
 }
+
+// Search has no access to the current answer, puzzle order, or completion state.
+export const searchCities = createCitySearch(cities);

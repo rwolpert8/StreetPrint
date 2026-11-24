@@ -1,0 +1,21 @@
+{
+  "source": "https://download.geonames.org/export/dump/",
+  "license": "CC BY 4.0",
+  "generatedAt": "2026-11-21T19:07:05.620962+00:00",
+  "selection": "Population >= 50000 or PPLC national capital, plus pinned existing cities; populated-place types only.",
+  "count": 11609,
+  "continents": {
+    "Africa": 1590,
+    "Asia": 5447,
+    "Europe": 1876,
+    "North America": 1441,
+    "Oceania": 77,
+    "South America": 1178
+  },
+  "sourceSha256": {
+    "cities15000.zip": "df53bb7aade75a0fa2160a98405e5e1d014fe4c6f4b0db1d6078b9fd7b50486b",
+    "countryInfo.txt": "79f8f59ea01cbb40438bf1856dd6c2ff201f03f8fc72d0530b2646aaf603ef04",
+    "admin1CodesASCII.txt": "2e4867f5397acb056ea26377601b57af37cb4c81399770225018e9e439e91ad3"
+  },
+  "catalogueSha256": "abf795c7fb5cf0f58c4930800f50676fc539dfc0fbbc1045cfdb4e479f8c1559"
+}

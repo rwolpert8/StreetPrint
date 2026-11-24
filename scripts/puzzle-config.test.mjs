@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, dirname, basename } from "node:path";
 import { pathToFileURL } from "node:url";
-import { readDefinitions, validateDefinitions, readPuzzleAsset } from "./puzzle-config.mjs";
+import { readDefinitions, validateDefinitions, validateCatalogueReferences, readPuzzleAsset } from "./puzzle-config.mjs";
 
 const definitions = await readDefinitions();
 const sample = () => ({ schemaVersion: 1, puzzles: [structuredClone(definitions[0])] });
@@ -67,4 +67,20 @@ test("asset checks detect absent or stale maps but allow editorial changes", asy
 test("enabled puzzle maps are ready, drafts do not need assets", async () => {
   for (const puzzle of definitions.filter((p) => p.enabled)) assert.match(await readPuzzleAsset(puzzle), /<svg/);
   assert.equal(validateDefinitions({ schemaVersion: 1, puzzles: [] }).length, 0);
+});
+
+test("puzzle answers reuse imported IDs rather than creating duplicate correct cities", () => {
+  const puzzle = sample().puzzles[0];
+  const { city } = puzzle;
+  const catalogue = { cities: [[city.id, city.name, city.countryCode, "", city.latitude, city.longitude, 100000, city.aliases, 1]] };
+  assert.doesNotThrow(() => validateCatalogueReferences([puzzle], catalogue));
+  city.id = "new-paris";
+  assert.throws(() => validateCatalogueReferences([puzzle], catalogue), /already exist/);
+  city.latitude = 0; // A different, distant place with the same name is allowed.
+  assert.doesNotThrow(() => validateCatalogueReferences([puzzle], catalogue));
+  city.id = "geonames-unknown";
+  assert.throws(() => validateCatalogueReferences([puzzle], catalogue), /unknown catalogue ID/);
+  city.id = catalogue.cities[0][0];
+  city.countryCode = "us";
+  assert.throws(() => validateCatalogueReferences([puzzle], catalogue), /different country/);
 });

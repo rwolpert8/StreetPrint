@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { cities, type City } from "@/data/cities";
 import { cityLabel, searchCities } from "@/lib/city-search";
 
@@ -19,7 +19,7 @@ export function CitySearch({ selected, onSelect, autoFocus = false }: {
   const [active, setActive] = useState(0);
   const input = useRef<HTMLInputElement>(null);
   const list = useRef<HTMLUListElement>(null);
-  const results = searchCities(query);
+  const results = useMemo(() => searchCities(query), [query]);
   const showResults = open && query.trim().length > 0;
   const activeCity = showResults ? results[active] : undefined;
 
@@ -81,8 +81,8 @@ export function CitySearch({ selected, onSelect, autoFocus = false }: {
               <span className="option-arrow" aria-hidden="true">↵</span>
             </li>)}
           </ul>
-          {results.length === 0 && <p className="no-results">No matching city in this preview. Try another name.</p>}
-          <div className="results-caption">{cities.length} cities in this preview <span>↑ ↓ to explore · Enter to select</span></div>
+          {results.length === 0 && <p className="no-results">No matching city. Try another spelling or a nearby larger city.</p>}
+          <div className="results-caption">{cities.length.toLocaleString("en-US")} cities available <span>↑ ↓ to explore · Enter to select</span></div>
         </div>}
       </div>
 

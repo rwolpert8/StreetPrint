@@ -110,18 +110,21 @@ npm start         # Serve that production build
 - `src/lib/game.ts` contains the independently tested distance/bearing calculations,
   feedback hierarchy, and round transitions; `src/data/puzzle.ts` reads enabled definitions from `puzzles.json`.
 - `src/lib/city-search.ts` contains the UI-independent matching and ranking logic.
-- `src/data/cities.ts` combines extra guessable cities with enabled puzzle cities from `puzzles.json`.
-  It includes countries, continents, aliases, and approximate reference coordinates.
-  This small catalogue is for interaction testing, not complete worldwide coverage;
-  distances use these approximate city anchors. Review them before public launch.
+- `src/data/cities.ts` combines the checked-in GeoNames catalogue with enabled puzzle cities.
+  It includes 11,609 guessable cities, region labels, alternate names, and reference coordinates.
+  Search favors exact names and uses population to rank equally good matches.
+  Existing city IDs and scoring coordinates are preserved for saved progress.
+  See [the catalogue guide](docs/CITY-CATALOGUE.md) for coverage, sources, and refresh instructions.
 
 Search ignores letter case and accents and supports aliases such as `NYC`,
 `Munchen`, and `東京`. City IDs distinguish Paris, France from Paris, Texas.
 Country flags are bundled locally through the MIT-licensed `flag-icons` package;
 there are no third-party requests while typing. System fonts also work offline.
 
-Daily puzzle selection, sharing, and a larger city catalogue
-remain later work. Puzzle answers are currently
+Use `npm run cities:find -- "Washington United States"` to look up a city's existing
+ID and definition when authoring a puzzle. All city search runs locally.
+
+Daily puzzle selection and sharing remain later work. Puzzle answers are currently
 included in the client bundle; this prototype does not prevent answer inspection.
 
 ## Original map experiments

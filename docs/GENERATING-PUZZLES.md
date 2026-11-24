@@ -10,7 +10,9 @@ Open PowerShell in the StreetPrint project folder. Your existing `.venv` is
 already set up on this computer. The only authoring file you need is
 [`puzzles.json`](../puzzles.json).
 
-1. Copy a puzzle entry in `puzzles.json`, give it an unused ID,
+1. Find your city's existing catalogue entry with `npm run cities:find -- "City Country"`.
+   Copy the matching `city` object, retaining its city ID to avoid duplicate guesses.
+   Copy a puzzle entry in `puzzles.json`, give the puzzle an unused ID,
    update its city and map details, and start with `"enabled": false`.
    The Boston definition below shows the required fields; use a new ID for a new puzzle.
 2. Check the file and generate just that puzzle:
@@ -78,9 +80,12 @@ The file has `"schemaVersion": 1` and a `"puzzles"` array. Each puzzle looks lik
 
 - **id:** unique puzzle number, `study-006` or higher. Keep existing IDs stable.
 - **enabled:** whether the puzzle appears in the game. Generate and review first.
-- **city.id:** stable city identifier, such as `us-boston`. Use the same ID when
+- **city.id:** stable city identifier, such as `us-boston` or `geonames-4140963`.
+  Look it up with `npm run cities:find -- "City Country"` and reuse the returned ID.
+  Use the same ID when
   another puzzle shows the same city; use different IDs for different cities
-  with the same name. Existing guessable cities are listed in `src/data/cities.ts`.
+  with the same name. See [the city catalogue guide](CITY-CATALOGUE.md) for coverage
+  and adding cities that are absent from the imported snapshot.
 - **city.name / country:** text displayed in search and the answer.
 - **city.countryCode:** lowercase two-letter ISO country code, used for flags and
   country feedback, such as `us`, `fr`, `jp`, or `au`.

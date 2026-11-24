@@ -21,6 +21,6 @@ export default async function Home() {
     <main id="main">
       <PracticeGame puzzles={playablePuzzles} />
     </main>
-    <footer className="site-footer flex flex-wrap items-center justify-between gap-3"><span><span aria-hidden="true">🗺️</span> StreetPrint</span><span>Practice mode · Daily puzzles coming later</span></footer>
+    <footer className="site-footer flex flex-wrap items-center justify-between gap-3"><span><span aria-hidden="true">🗺️</span> StreetPrint</span><span>City data adapted from <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a></span><span>Practice mode · Daily puzzles coming later</span></footer>
   </div>;
 }

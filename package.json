@@ -7,6 +7,7 @@
     "puzzles:list": "node scripts/puzzles.mjs list",
     "puzzles:check": "node scripts/puzzles.mjs check",
     "puzzles:generate": "node scripts/puzzles.mjs generate",
+    "cities:find": "tsx scripts/find-city.ts",
     "predev": "npm run assets",
     "dev": "next dev --hostname 127.0.0.1",
     "prebuild": "npm run assets",

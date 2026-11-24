@@ -44,7 +44,35 @@ export async function readDefinitions() {
   let data;
   try { data = JSON.parse(await readFile(new URL("puzzles.json", root), "utf8")); }
   catch (error) { throw new Error(`Cannot read puzzles.json: ${error.message}`); }
-  return validateDefinitions(data);
+  const definitions = validateDefinitions(data);
+  const catalogue = JSON.parse(await readFile(new URL("src/data/city-catalogue.json", root), "utf8"));
+  validateCatalogueReferences(definitions, catalogue);
+  return definitions;
+}
+
+// A second ID for an imported answer would turn a correct guess into a loss.
+// Detect likely duplicates during authoring; never silently merge nearby places.
+export function validateCatalogueReferences(definitions, catalogue) {
+  const normalize = (name) => name.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase()
+    .replace(/[\p{P}\p{S}]+/gu, " ").trim().replace(/\s+/g, " ");
+  const byId = new Map(catalogue.cities.map((city) => [city[0], city]));
+  for (const { id, city } of definitions) {
+    const existing = byId.get(city.id);
+    if (existing) {
+      check(existing[2] === city.countryCode, `${id}: city.id ${city.id} belongs to a different country in the catalogue.`);
+      continue;
+    }
+    check(!city.id.startsWith("geonames-"), `${id}: unknown catalogue ID ${city.id}. Use npm run cities:find -- "${city.name}".`);
+    const names = new Set([city.name, ...city.aliases].map(normalize));
+    const nearby = catalogue.cities.find((entry) => {
+      if (entry[2] !== city.countryCode) return false;
+      const northKm = (entry[4] - city.latitude) * 111;
+      const eastKm = (entry[5] - city.longitude) * 111 * Math.cos(city.latitude * Math.PI / 180);
+      return Math.hypot(northKm, eastKm) < 25
+        && [entry[1], ...entry[7]].some((name) => names.has(normalize(name)));
+    });
+    check(!nearby, `${id}: ${city.name} appears to already exist as ${nearby?.[0]}. Use npm run cities:find to review and reuse the catalogue city ID.`);
+  }
 }
 
 export async function readPuzzleAsset(puzzle, base = root) {
